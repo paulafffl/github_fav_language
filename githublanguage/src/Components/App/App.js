@@ -10,7 +10,7 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      searchResults: [],
+      searchResult: "",
       isLoggedIn : accessCode ? true : false
     };
     this.login = this.login.bind(this);
@@ -22,9 +22,9 @@ class App extends React.Component {
   }
 
   search(username){
-    GithubAPI.search(username).then( languages => {
+    GithubAPI.search(username).then( response => {
       this.setState({
-        searchResults: languages
+        searchResult: response
       })
     });
   }
@@ -38,7 +38,7 @@ class App extends React.Component {
         ? <SearchBar onSearch = {this.search}/>
         : <LoginBar onLogin = {this.login}/>
         }
-        <p> {this.state.searchResults} </p>
+        <p> {this.state.searchResult} </p>
       </header>
     </div>
   )};

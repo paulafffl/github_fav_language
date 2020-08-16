@@ -22,32 +22,45 @@ const GithubAPI = {
     const codeUrl = `https://github.com/login/oauth/access_token?client_id=${client_id}&client_secret=${client_secret}&code=${code}`;
     var proxyUrl = `https://cors-anywhere.herokuapp.com/${codeUrl}`;
     //2ND Makes a POST request to exchange code for access token
-    const response = await fetch(proxyUrl, {
-      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-      method: 'POST',
-    })
-    const jsonResponse = await response.json();
-    accessToken = jsonResponse.access_token;
-    return accessToken;
+    try {
+      const response = await fetch(proxyUrl, {
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        method: 'POST',
+      })
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        accessToken = jsonResponse.access_token;
+        return accessToken;
+      }
+      throw new Error('POST Request Failed');
+    } catch (error) {
+      return console.log(error, "Failed at: retrieving access token. Reason: possibly the code has expired");
+    }
   },
 
   async search(username){
     //3RD Makes a GET request of all repos of the specified username
-    const response = await fetch(`https://api.github.com/users/${username}/repos`, {
+    try {
+      const response = await fetch(`https://api.github.com/users/${username}/repos`, {
         headers: {Authorization: `${accessToken} OAUTH-TOKEN`}
       })
-    const jsonResponse = await response.json();
-    if (!jsonResponse){
-      return [];
-    }
-    const mappedRepos = jsonResponse.map(repo => {
-      return {
-        language: repo.language
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        const mappedRepos = jsonResponse.map(repo => {
+          return {
+            language: repo.language
+          }
+        })
+        const languages = []
+        mappedRepos.forEach(obj => {languages.push(obj.language)});
+        const favLanguage = this.mostFrequentItem(languages);
+        return `${username}'s favourite language is ${favLanguage}!`;
       }
-    })
-    const languages = []
-    mappedRepos.forEach(obj => {languages.push(obj.language)});
-    return this.mostFrequentItem(languages);
+      throw new Error('GET Request Failed');
+    } catch (error) {
+      console.log(error, " Failed at: retrieving repositories list of given user. Reason: possibly invalid username");
+      return "Invalid username, please check if there isn't any typos :)";
+    }
   },
   
 }
