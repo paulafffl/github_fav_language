@@ -22,7 +22,8 @@ class SearchBar extends React.Component {
   render() {
     return (
       <div className="SearchBar">
-        <input placeholder="Enter GitHub Username" onChange={this.handleChange}/>
+        <p> You're logged-in! Now type a Github username below and I'll guess this user favourite language</p>
+        <input placeholder="Username" onChange={this.handleChange}/>
         <button className="SearchButton" onClick={this.search} >GUESS FAVOURITE LANGUAGE</button>
       </div>
     )
