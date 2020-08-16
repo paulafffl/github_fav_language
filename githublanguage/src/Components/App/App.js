@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
+import GithubAPI from '../../utils/GithubAPI';
 
 class App extends React.Component {
 
@@ -13,7 +14,11 @@ class App extends React.Component {
   }
 
   search(username){
-
+    GithubAPI.search(username).then( languages => {
+      this.setState({
+        searchResults: languages
+      })
+    }); 
   }
 
   render(){
