@@ -3,6 +3,7 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
 import GithubAPI from '../../utils/GithubAPI';
 import LoginBar from '../LoginBar/LoginBar';
+const accessCode = window.location.href.match(/code=([^&]*)/);
 
 class App extends React.Component {
 
@@ -10,18 +11,14 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchResults: [],
-      loginVisibility: true
+      isLoggedIn : accessCode ? true : false
     };
     this.login = this.login.bind(this);
     this.search = this.search.bind(this);
   }
 
   login(){
-      GithubAPI.getAccessToken().then (() => {
-        this.setState({
-          loginVisibility : !this.state.loginVisibility
-        })
-      })
+      GithubAPI.getAccessToken()
   }
 
   search(username){
@@ -33,16 +30,13 @@ class App extends React.Component {
   }
 
   render(){
-    const codeMatched = window.location.href.match(/code=([^&]*)/);
     return (
     <div className="App">
       <header className="App-header">
         <h1> What’s your favourite programming language? </h1>
-        {!codeMatched && 
-          <LoginBar onLogin = {this.login}/>
-        }
-        {codeMatched && 
-        <SearchBar onSearch = {this.search}/>
+        {this.state.isLoggedIn
+        ? <SearchBar onSearch = {this.search}/>
+        : <LoginBar onLogin = {this.login}/>
         }
         <p> {this.state.searchResults} </p>
       </header>
