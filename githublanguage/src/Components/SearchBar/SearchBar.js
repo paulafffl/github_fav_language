@@ -14,10 +14,15 @@ class SearchBar extends React.Component {
   search(){
     this.props.onSearch(this.state.username);
   }
+
+  handleChange(e){
+    this.setState({username: e.target.value});
+  } 
   
   render() {
     return (
       <div className="SearchBar">
+        <input placeholder="Enter GitHub Username" onChange={this.handleChange}/>
         <button className="SearchButton" onClick={this.search} >GUESS FAVOURITE LANGUAGE</button>
       </div>
     )
