@@ -4,8 +4,12 @@ import './SearchBar.css'
 class SearchBar extends React.Component {
   constructor(props){
     super(props);
+    let username = '';
+    if (localStorage.getItem('savedUsername')) {
+      username = localStorage.getItem('savedUsername');
+    };
     this.state = {
-      username : ''
+      username 
     };
     this.search = this.search.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -22,7 +26,7 @@ class SearchBar extends React.Component {
   render() {
     return (
       <div className="SearchBar">
-        <input placeholder="Enter GitHub Username" onChange={this.handleChange}/>
+        <input placeholder="Enter GitHub Username" value={this.state.username} onChange={this.handleChange}/>
         <button className="SearchButton" onClick={this.search} >GUESS FAVOURITE LANGUAGE</button>
       </div>
     )
