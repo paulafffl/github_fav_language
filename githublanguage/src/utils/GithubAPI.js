@@ -3,8 +3,18 @@ const client_secret = "";
 const redirectUri = "http://localhost:3000/";
 
 let code;
+let accessToken;
 
 const GithubAPI = {
+
+  mostFrequentItem(array) {
+    return array.reduce((previous, current, i, arr) =>
+    arr.filter(item => item === previous).length >
+    arr.filter(item => item === current).length
+      ? previous
+      : current
+    );
+  },
   
   getCode(username){
     // check for code
@@ -34,16 +44,21 @@ const GithubAPI = {
     const accessToken = jsonResponse1.access_token;
     //3RD Makes a GET request of all repos of the specified username
     const response = await fetch(`https://api.github.com/users/${username}/repos`, {
+        //headers: {Authorization: `token ${accessToken}`}
         headers: {Authorization: `${accessToken} OAUTH-TOKEN`}
       })
     const jsonResponse = await response.json();
+    if (!jsonResponse){
+      return [];
+    }
     const mappedRepos = jsonResponse.map(repo => {
       return {
         language: repo.language
       }
     })
     const languages = []
-    return mappedRepos.forEach(obj => {languages.push(obj.language)});
+    mappedRepos.forEach(obj => {languages.push(obj.language)});
+    return this.mostFrequentItem(languages);
   },
   
 }
