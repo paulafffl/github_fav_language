@@ -1,68 +1,77 @@
-const client_id = "6424af2a727bd1125847";
-const client_secret = "";
-const redirectUri = "http://localhost:3000/";
+import {config} from './SensitiveInfo';
 
-let accessToken;
+const client_id = config.client_id;
+const client_secret = config.client_secret;
+const redirectUri = "http://localhost:3000/";
 
 const GithubAPI = {
 
-  mostFrequentItem(array) {
-    return array.reduce((previous, current, i, arr) =>
-    arr.filter(item => item === previous).length > arr.filter(item => item === current).length ? previous : current);
-  },
-  
+  //GET request to retrieve a temporary code
   getCode(){
-    //1ST Makes a GET request to retrieve a temporary code
     const accessUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${redirectUri}`;
     window.location = accessUrl;
   },
 
-  async getAccessToken(){
-    const code = GithubAPI.getCode();
+  //POST request to exchange code for access token
+  async fetchAccessToken(code){
     const codeUrl = `https://github.com/login/oauth/access_token?client_id=${client_id}&client_secret=${client_secret}&code=${code}`;
-    var proxyUrl = `https://cors-anywhere.herokuapp.com/${codeUrl}`;
-    //2ND Makes a POST request to exchange code for access token
+    const proxyUrl = `https://cors-anywhere.herokuapp.com/${codeUrl}`;
+    const reqConfig = {
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      method: 'POST',
+    };
     try {
-      const response = await fetch(proxyUrl, {
-        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-        method: 'POST',
-      })
+      const response = await fetch(proxyUrl, reqConfig)
       if (response.ok) {
         const jsonResponse = await response.json();
-        accessToken = jsonResponse.access_token;
-        return accessToken;
+        return jsonResponse;
       }
-      throw new Error('POST Request Failed');
+      throw new Error();
     } catch (error) {
-      return console.log(error, "Failed at: retrieving access token. Reason: possibly the code has expired");
+      console.log(error);
+      return Error
     }
   },
 
-  async search(username){
-    //3RD Makes a GET request of all repos of the specified username
+  //GET request of all repos of the specified username
+  async fetchRepos(username, accessToken){
+    const url = `https://api.github.com/users/${username}/repos`;
+    const reqConfig = {
+      headers: {Authorization: `${accessToken} OAUTH-TOKEN`},
+      method: 'GET',
+    };
     try {
-      const response = await fetch(`https://api.github.com/users/${username}/repos`, {
-        headers: {Authorization: `${accessToken} OAUTH-TOKEN`}
-      })
+      const response = await fetch(url, reqConfig);
       if (response.ok) {
         const jsonResponse = await response.json();
-        const mappedRepos = jsonResponse.map(repo => {
-          return {
-            language: repo.language
-          }
-        })
-        const languages = []
-        mappedRepos.forEach(obj => {languages.push(obj.language)});
-        const favLanguage = this.mostFrequentItem(languages);
-        return `${username}'s favourite language is ${favLanguage}!`;
+        return jsonResponse;
       }
-      throw new Error('GET Request Failed');
+      throw new Error();
     } catch (error) {
-      console.log(error, " Failed at: retrieving repositories list of given user. Reason: possibly invalid username");
-      return "Invalid username, please check if there isn't any typos :)";
+      console.log(error);
+      return Error;
     }
   },
-  
+
+  //Maps repositories and returns favourite language based on occurrence
+  responseMap(jsonResponse) {
+    const mappedRepos = jsonResponse.map(repo => {
+      return {
+        language: repo.language
+      }
+    })
+    const languages = []
+    mappedRepos.forEach(obj => {languages.push(obj.language)});
+    const favLanguage = this.mostFrequentItem(languages);
+    return favLanguage;
+  },
+
+  //Returns the most frequent item within an array
+  mostFrequentItem(array) {
+    return array.reduce((previous, current, i, arr) =>
+    arr.filter(item => item === previous).length > arr.filter(item => item === current).length ? previous : current);
+  },
+
 }
 
 export default GithubAPI;
