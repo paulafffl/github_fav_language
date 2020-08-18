@@ -3,7 +3,9 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
 import GithubAPI from '../../utils/GithubAPI';
 import LoginBar from '../LoginBar/LoginBar';
-const accessCode = window.location.href.match(/code=([^&]*)/);
+
+let accessCode = window.location.href.match(/code=([^&]*)/);
+let accessToken;
 
 class App extends React.Component {
 
@@ -17,16 +19,22 @@ class App extends React.Component {
     this.search = this.search.bind(this);
   }
 
-  login(){
-      GithubAPI.getAccessToken()
+  async login(){
+    let code = GithubAPI.getCode();
+    let response = await GithubAPI.fetchAccessToken(code);
+    accessToken = response.access_token;
   }
 
-  search(username){
-    GithubAPI.search(username).then( response => {
-      this.setState({
-        searchResult: response
-      })
-    });
+  async search(username, accessToken){
+    let response = await GithubAPI.fetchRepos(username, accessToken);
+    if (typeof response !== 'function') {
+      response = GithubAPI.responseMap(response);
+    }
+    this.setState({
+      searchResult : (typeof response !== 'function')
+      ? `${username}'s favourite language is ${response}!`
+      : "Invalid username, please check if there isn't any typos :)"
+    })
   }
 
   render(){
