@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './LoginBar.css'
 
 class LoginBar extends React.Component {
@@ -19,6 +20,10 @@ class LoginBar extends React.Component {
       </div>
     );
   }
+}
+
+LoginBar.propTypes = {
+  onLogin: PropTypes.func
 }
 
 export default LoginBar;
