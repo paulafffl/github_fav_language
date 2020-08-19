@@ -32,7 +32,7 @@ class App extends React.Component {
     }
     this.setState({
       searchResult : (typeof response !== 'function')
-      ? `${username}'s favourite language is ${response}!`
+      ? `${username} favourite language is ${response}!`
       : "Invalid username, please check if there isn't any typos :)"
     })
   }

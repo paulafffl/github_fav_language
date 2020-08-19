@@ -10,7 +10,7 @@ describe('App Component', () => {
     wrapper = shallow(<App/>);
   });
 
-  test('App Component should be rendered', ()=>{
+  it('Should render', ()=>{
     const header = wrapper.find('.App-header');
     expect(header.length).toBe(1);
   });
