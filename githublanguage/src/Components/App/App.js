@@ -5,28 +5,28 @@ import GithubAPI from '../../utils/GithubAPI';
 import LoginBar from '../LoginBar/LoginBar';
 
 let accessCode = window.location.href.match(/code=([^&]*)/);
-let accessToken;
 
 class App extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      searchResult: "",
-      isLoggedIn : accessCode ? true : false
+      searchResult : "",
+      isLoggedIn : accessCode ? true : false,
+      accessToken : "",
     };
     this.login = this.login.bind(this);
     this.search = this.search.bind(this);
   }
 
-  async login(){
+  async login() {
     let code = GithubAPI.getCode();
     let response = await GithubAPI.fetchAccessToken(code);
-    accessToken = response.access_token;
+    this.setState({ accessToken : response.access_token });
   }
 
-  async search(username, accessToken){
-    let response = await GithubAPI.fetchRepos(username, accessToken);
+  async search(username) {
+    let response = await GithubAPI.fetchRepos(username, this.state.accessToken);
     if (typeof response !== 'function') {
       response = GithubAPI.responseMap(response);
     }
@@ -37,7 +37,7 @@ class App extends React.Component {
     })
   }
 
-  render(){
+  render() {
     return (
     <div className="App">
       <header className="App-header">

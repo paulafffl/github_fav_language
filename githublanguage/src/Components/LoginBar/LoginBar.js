@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import './LoginBar.css'
 
 class LoginBar extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.login = this.login.bind(this);
   }
 
-  login(){
+  login() {
     this.props.onLogin(this.props.onLogin) 
   }
 

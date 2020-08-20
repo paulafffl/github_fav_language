@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './SearchBar.css'
 
 class SearchBar extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       username : ''
@@ -12,11 +12,11 @@ class SearchBar extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  search(){
+  search() {
     this.props.onSearch(this.state.username);
   }
 
-  handleChange(e){
+  handleChange(e) {
     this.setState({username: e.target.value});
   } 
   
