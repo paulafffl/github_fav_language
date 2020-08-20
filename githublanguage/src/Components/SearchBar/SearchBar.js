@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SearchBar.css'
 
 class SearchBar extends React.Component {
@@ -22,12 +23,16 @@ class SearchBar extends React.Component {
   render() {
     return (
       <div className="SearchBar">
-        <p> Type a Github username below and I'll guess this user favourite language</p>
-        <input placeholder="Username" onChange={this.handleChange}/>
+        <p className="Message"> Type a Github username below and I'll guess this user favourite language</p>
+        <input className="InputField" placeholder="Username" onChange={this.handleChange}/>
         <button className="SearchButton" onClick={this.search} >GUESS IT</button>
       </div>
     )
   }
+}
+
+SearchBar.propTypes = {
+  onSearch: PropTypes.func
 }
 
 export default SearchBar;
