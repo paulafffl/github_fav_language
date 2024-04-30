@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './SearchBar.css'
+import React from "react";
+import PropTypes from "prop-types";
+import "./SearchBar.css";
 
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username : ''
+      username: "",
     };
     this.search = this.search.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -17,22 +17,29 @@ class SearchBar extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({username: e.target.value});
-  } 
-  
+    this.setState({ username: e.target.value });
+  }
+
   render() {
     return (
-      <div className="SearchBar">
-        <p className="Message"> Type a Github username below and I'll guess this user favourite language</p>
-        <input className="InputField" placeholder="Username" onChange={this.handleChange}/>
-        <button className="SearchButton" onClick={this.search} >GUESS IT</button>
-      </div>
-    )
+      <>
+        <div className="SearchBar">
+          <input
+            className="InputField"
+            placeholder="Type a GitHub username"
+            onChange={this.handleChange}
+          />
+          <button className="SearchButton" onClick={this.search}>
+            GUESS
+          </button>
+        </div>
+      </>
+    );
   }
 }
 
 SearchBar.propTypes = {
-  onSearch: PropTypes.func
-}
+  onSearch: PropTypes.func,
+};
 
 export default SearchBar;

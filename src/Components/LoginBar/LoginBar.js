@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './LoginBar.css'
+import React from "react";
+import PropTypes from "prop-types";
+import "./LoginBar.css";
 
 class LoginBar extends React.Component {
   constructor(props) {
@@ -9,21 +9,23 @@ class LoginBar extends React.Component {
   }
 
   login() {
-    this.props.onLogin(this.props.onLogin) 
+    this.props.onLogin(this.props.onLogin);
   }
 
   render() {
     return (
       <div>
-        <p className="Message"> First things first: please log in to Github</p>
-        <button className="LoginButton" onClick={this.login} >LOGIN</button>
+        <p className="Message">First things first: log in to GitHub</p>
+        <button className="LoginButton" onClick={this.login}>
+          LOGIN
+        </button>
       </div>
     );
   }
 }
 
 LoginBar.propTypes = {
-  onLogin: PropTypes.func
-}
+  onLogin: PropTypes.func,
+};
 
 export default LoginBar;
