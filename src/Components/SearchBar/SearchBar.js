@@ -12,7 +12,8 @@ class SearchBar extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  search() {
+  search(e) {
+    e.preventDefault();
     this.props.onSearch(this.state.username);
   }
 
@@ -22,18 +23,22 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <>
-        <div className="SearchBar">
-          <input
-            className="InputField"
-            placeholder="Type a GitHub username"
-            onChange={this.handleChange}
-          />
-          <button className="SearchButton" onClick={this.search}>
-            GUESS
-          </button>
-        </div>
-      </>
+      <form onSubmit={(e) => this.search(e)} className="SearchBar">
+        <input
+          type="text"
+          className="InputField"
+          placeholder="Type a GitHub username"
+          value={this.state.username}
+          onChange={this.handleChange}
+        />
+        <button
+          type="submit"
+          className="SearchButton"
+          aria-label="Guess favourite language"
+        >
+          GUESS
+        </button>
+      </form>
     );
   }
 }
