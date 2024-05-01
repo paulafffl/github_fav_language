@@ -3,7 +3,7 @@ import "./App.css";
 import SearchBar from "../SearchBar/SearchBar";
 import GithubAPI from "../../utils/GithubAPI";
 import LoginBar from "../LoginBar/LoginBar";
-import logo from "../../logo.svg";
+import logo from "../../logo.png";
 
 let accessCode = window.location.href.match(/code=([^&]*)/);
 

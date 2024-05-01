@@ -1,8 +1,10 @@
+// Details available on https://github.com/settings/developers
 import { config } from "./SensitiveInfo";
 
 const client_id = config.client_id;
 const client_secret = config.client_secret;
-const redirectUri = "http://localhost:3000/";
+// const redirectUri = "http://localhost:3000/";
+const redirectUri = "http://github_fav_language.surge.sh/";
 
 const GithubAPI = {
   //GET request to retrieve a temporary code

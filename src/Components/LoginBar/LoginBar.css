@@ -1,4 +1,8 @@
 .LoginButton {
-  border-radius: 4px;
-  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.Message {
+  font-weight: 400;
 }

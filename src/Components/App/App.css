@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 20vmin;
+  height: 30vmin;
   pointer-events: none;
 }
 
@@ -25,16 +25,4 @@
 
 .Result {
   font-weight: normal;
-}
-
-h1 {
-  color: aquamarine;
-  margin-bottom: 0;
-}
-
-h3 {
-  margin-top: 0;
-  font-size: calc(20px + 2vmin);
-  color: aquamarine;
-  font-weight: bold;
 }

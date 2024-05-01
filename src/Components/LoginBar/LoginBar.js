@@ -15,9 +15,9 @@ class LoginBar extends React.Component {
   render() {
     return (
       <div>
-        <p className="Message">First things first: log in to GitHub</p>
+        <p className="Message">But first things first:</p>
         <button className="LoginButton" onClick={this.login}>
-          LOGIN
+          LOG IN TO GITHUB
         </button>
       </div>
     );
