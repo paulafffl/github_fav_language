@@ -1,9 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { ChangeEvent, FormEvent } from "react";
 import "./SearchBar.css";
 
-class SearchBar extends React.Component {
-  constructor(props) {
+type SearchBarProps = {
+  onSearch: (username: string) => void;
+};
+
+type SearchBarState = {
+  username: string;
+};
+
+class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
+  constructor(props: SearchBarProps) {
     super(props);
     this.state = {
       username: "",
@@ -12,12 +19,12 @@ class SearchBar extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  search(e) {
+  search(e: FormEvent) {
     e.preventDefault();
     this.props.onSearch(this.state.username);
   }
 
-  handleChange(e) {
+  handleChange(e: ChangeEvent<HTMLInputElement>) {
     this.setState({ username: e.target.value });
   }
 
@@ -42,9 +49,5 @@ class SearchBar extends React.Component {
     );
   }
 }
-
-SearchBar.propTypes = {
-  onSearch: PropTypes.func,
-};
 
 export default SearchBar;

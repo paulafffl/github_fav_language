@@ -1,15 +1,18 @@
 import React from "react";
-import PropTypes from "prop-types";
 import "./LoginBar.css";
 
-class LoginBar extends React.Component {
-  constructor(props) {
+type LoginBarProps = {
+  onLogin: () => Promise<void>;
+};
+
+class LoginBar extends React.Component<LoginBarProps> {
+  constructor(props: LoginBarProps) {
     super(props);
     this.login = this.login.bind(this);
   }
 
   login() {
-    this.props.onLogin(this.props.onLogin);
+    this.props.onLogin();
   }
 
   render() {
@@ -23,9 +26,5 @@ class LoginBar extends React.Component {
     );
   }
 }
-
-LoginBar.propTypes = {
-  onLogin: PropTypes.func,
-};
 
 export default LoginBar;

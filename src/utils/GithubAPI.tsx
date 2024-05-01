@@ -6,15 +6,19 @@ const client_secret = config.client_secret;
 // const redirectUri = "http://localhost:3000/";
 const redirectUri = "http://github_fav_language.surge.sh/";
 
+interface Repo {
+  language: string | null;
+}
+
 const GithubAPI = {
   //GET request to retrieve a temporary code
-  getCode() {
+  getCode(): void {
     const accessUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${redirectUri}`;
-    window.location = accessUrl;
+    window.location.href = accessUrl;
   },
 
   //POST request to exchange code for access token
-  async fetchAccessToken(code) {
+  async fetchAccessToken(code: void) {
     const codeUrl = `https://github.com/login/oauth/access_token?client_id=${client_id}&client_secret=${client_secret}&code=${code}`;
     const proxyUrl = `https://cors-anywhere.herokuapp.com/${codeUrl}`;
     const reqConfig = {
@@ -38,7 +42,7 @@ const GithubAPI = {
   },
 
   //GET request of all repos of the specified username
-  async fetchRepos(username, accessToken) {
+  async fetchRepos(username: string, accessToken: string): Promise<any> {
     const url = `https://api.github.com/users/${username}/repos`;
     const reqConfig = {
       headers: { Authorization: `${accessToken} OAUTH-TOKEN` },
@@ -58,30 +62,30 @@ const GithubAPI = {
   },
 
   //Maps repositories and returns favourite language based on occurrence
-  responseMap(jsonResponse) {
-    const mappedRepos = jsonResponse.map((repo) => {
+  responseMap(jsonResponse: Repo[]): string {
+    const mappedRepos: Repo[] = jsonResponse.map((repo) => {
       return {
         language: repo.language,
       };
     });
-    const languages = [];
-    mappedRepos.forEach((obj) => {
-      languages.push(obj.language);
-    });
-    const favLanguage = this.mostFrequentItem(languages);
-    return favLanguage;
+    const languages: (string | null)[] = mappedRepos.map((obj) => obj.language);
+    const favLanguage: string | null = this.mostFrequentItem(languages);
+    return favLanguage !== null ? favLanguage : "";
   },
 
   //Returns the most frequent item within an array
-  mostFrequentItem(array) {
+  mostFrequentItem(array: (string | null)[]): string | null {
     if (array.length > 0) {
-      return array.reduce((previous, current, i, arr) =>
-        arr.filter((item) => item === previous).length >
-        arr.filter((item) => item === current).length
-          ? previous
-          : current
+      return (
+        array.reduce((previous, current, i, arr) =>
+          arr.filter((item) => item === previous).length >
+          arr.filter((item) => item === current).length
+            ? previous
+            : current
+        ) || null
       );
     }
+    return null;
   },
 };
 

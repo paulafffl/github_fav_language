@@ -7,8 +7,14 @@ import logo from "../../logo.png";
 
 let accessCode = window.location.href.match(/code=([^&]*)/);
 
-class App extends React.Component {
-  constructor(props) {
+interface AppState {
+  searchResult: string;
+  isLoggedIn: boolean;
+  accessToken: string;
+}
+
+class App extends React.Component<{}, AppState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       searchResult: "",
@@ -21,18 +27,19 @@ class App extends React.Component {
   }
 
   async login() {
-    let code = GithubAPI.getCode();
+    let code: void = GithubAPI.getCode();
+    console.log("CODE", code);
     let response = await GithubAPI.fetchAccessToken(code);
     this.setState({ accessToken: response.access_token });
   }
 
-  async search(username) {
+  async search(username: string) {
     let response = await GithubAPI.fetchRepos(username, this.state.accessToken);
     let message = this.formatMsg(response);
     this.setState({ searchResult: message });
   }
 
-  formatMsg(response) {
+  formatMsg(response: any) {
     if (response === Error || response.length === 0) {
       return "Invalid username - check if there\u00A0aren't any typos 👀";
     }
