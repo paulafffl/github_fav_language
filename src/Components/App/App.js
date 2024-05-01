@@ -17,6 +17,7 @@ class App extends React.Component {
     };
     this.login = this.login.bind(this);
     this.search = this.search.bind(this);
+    this.formatMsg = this.formatMsg.bind(this);
   }
 
   async login() {
@@ -27,17 +28,19 @@ class App extends React.Component {
 
   async search(username) {
     let response = await GithubAPI.fetchRepos(username, this.state.accessToken);
-    if (typeof response !== "function") {
-      response = GithubAPI.responseMap(response);
+    let message = this.formatMsg(response);
+    this.setState({ searchResult: message });
+  }
+
+  formatMsg(response) {
+    if (response === Error || response.length === 0) {
+      return "Invalid username - check if there aren't any typos 👀";
     }
-    this.setState({
-      searchResult:
-        typeof response !== "function"
-          ? !response
-            ? `This user doesn't have any repositories ⚠️`
-            : `This user's favourite programming language is ${response}!`
-          : "Invalid username. Please check if there aren't any typos 👀",
-    });
+    if (response[0].language === null) {
+      return "This user's public repositories are empty ⚠️";
+    }
+    let answer = GithubAPI.responseMap(response);
+    return `This user's favourite programming language is ${answer}❤️`;
   }
 
   resultAsWords() {
