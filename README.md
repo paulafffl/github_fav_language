@@ -6,7 +6,7 @@ A client-side application that guesses a GitHub user's favourite programming lan
 
 1. Run `npm install` to install dependencies
 1. Run `npm start` to launch a local environment
-1. The website will be served at `http://localhost:3000`, but the website it's also live at http://github_fav_language.surge.sh/
+1. The website will be served at `http://localhost:3000`, but the website it's also live at http://favouritelanguage.surge.sh/
 
 ## Deployment
 
