@@ -4,7 +4,7 @@ import { config } from "./SensitiveInfo";
 const client_id = config.client_id;
 const client_secret = config.client_secret;
 // const redirectUri = "http://localhost:3000/";
-const redirectUri = "http://github_fav_language.surge.sh/";
+const redirectUri = "https://github_fav_language.surge.sh/";
 
 interface Repo {
   language: string | null;
