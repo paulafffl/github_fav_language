@@ -1,14 +1,17 @@
 .App {
   text-align: center;
+  height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
-  height: 30vmin;
+  height: 25vh;
   pointer-events: none;
 }
 
 .App-header {
-  padding: 0 3rem;
   background-color: #282c34;
   height: 100vh;
   display: flex;

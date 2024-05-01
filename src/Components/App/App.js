@@ -34,13 +34,13 @@ class App extends React.Component {
 
   formatMsg(response) {
     if (response === Error || response.length === 0) {
-      return "Invalid username - check if there aren't any typos 👀";
+      return "Invalid username - check if there\u00A0aren't any typos 👀";
     }
     if (response[0].language === null) {
-      return "This user's public repositories are empty ⚠️";
+      return "This user's public repositories\u00A0are\u00A0empty ⚠️";
     }
     let answer = GithubAPI.responseMap(response);
-    return `This user's favourite programming language is ${answer}❤️`;
+    return `This user's favourite programming\u00A0language is ${answer}❤️`;
   }
 
   resultAsWords() {
@@ -54,7 +54,7 @@ class App extends React.Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1>Tell me a GitHub username</h1>
-          <h2>and I'll guess their favourite language</h2>
+          <h2>and I'll guess their favourite&nbsp;language</h2>
           {this.state.isLoggedIn ? (
             <SearchBar onSearch={this.search} />
           ) : (
@@ -65,6 +65,16 @@ class App extends React.Component {
           </p>
           <h3> {this.resultAsWords().slice(-1)}</h3>
         </header>
+        <footer>
+          Built by
+          <a
+            href="https://www.linkedin.com/in/paulafernandeslima/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Paula Lima
+          </a>
+        </footer>
       </div>
     );
   }
